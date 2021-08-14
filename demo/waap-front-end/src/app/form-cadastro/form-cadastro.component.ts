@@ -27,15 +27,6 @@ export class FormCadastroComponent implements OnInit {
   }
 
   teste(event:Event) {
-
-    const readURL = file => {
-      return new Promise((res, rej) => {
-          const reader = new FileReader();
-          reader.onload = event => res(event.target.result);
-          reader.onerror = event => rej(e);
-          reader.readAsDataURL(file);
-      });
-  };
 }
 
   submit() {
@@ -52,6 +43,12 @@ export class FormCadastroComponent implements OnInit {
     const reader = new FileReader();
     reader.onload = (event: any) => this.preview = event.target.result;
     // reader.readAsDataURL(files);
+  }
+
+  upload() {
+    this.photoService
+      .upload(this.file)
+      .subscribe(con)
   }
 
 }

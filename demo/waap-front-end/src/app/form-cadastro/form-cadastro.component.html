@@ -8,7 +8,7 @@
 <div class="container">
 <form [formGroup]="cadastroForm" class="row" (ngSubmit)="submit()">
 
-  <input (change)="teste($event)" #fileInput hidden formControlName="file" type="file" accept="image/*">
+  <input (change)="handleFile($event)" #fileInput hidden formControlName="file" type="file" accept="image/*">
 
   <div class="mb-3">
     <label for="name" class="form-label">Nome:</label>
