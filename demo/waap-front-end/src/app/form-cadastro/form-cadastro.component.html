@@ -3,10 +3,10 @@
     <i  class="fa fa-image fa-4x align-middle "></i>
 </button>
 </div>
-<img [src] = "url" >
+<img [src] = "http://localhost:8080/users/image/1" >
 
 <div class="container">
-<form [formGroup]="cadastroForm" class="row" (ngSubmit)="submit()">
+<form [formGroup]="cadastroForm" class="row" (ngSubmit)="upload()">
 
   <input (change)="handleFile($event)" #fileInput hidden formControlName="file" type="file" accept="image/*">
 

@@ -10,6 +10,7 @@ public class UsuarioDto {
     private Long id;
     private String nome;
     private  String email;
+    private Byte[] imagem;
 
 
     public UsuarioDto(Usuario usuario) {
@@ -30,6 +31,10 @@ public class UsuarioDto {
 
     public String getEmail() {
         return email;
+    }
+
+    public Byte[] getImagem() {
+        return imagem;
     }
 
     public static List<UsuarioDto> converter(List<Usuario> usuarios) {

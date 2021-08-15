@@ -46,9 +46,9 @@ export class FormCadastroComponent implements OnInit {
   }
 
   upload() {
-    this.photoService
+    this.formcadastroService
       .upload(this.file)
-      .subscribe(con)
+      .subscribe((a)=>{console.log('finished',a);})
   }
 
 }
