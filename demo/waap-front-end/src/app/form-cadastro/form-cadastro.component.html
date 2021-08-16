@@ -1,11 +1,12 @@
 <div class="container centro">
   <button type="button" (click)="fileInput.click()" class="offset-md center btn btn-primary ">
-    <i  class="fa fa-image fa-4x align-middle "></i>
+    <!-- <i  class="fa fa-image fa-4x align-middle "></i> -->
+    <!--<img width ="90px"src = "http://localhost:8080/users/image/1" >-->
 </button>
 </div>
-<img [src] = "http://localhost:8080/users/image/1" >
 
 <div class="container">
+  
 <form [formGroup]="cadastroForm" class="row" (ngSubmit)="upload()">
 
   <input (change)="handleFile($event)" #fileInput hidden formControlName="file" type="file" accept="image/*">
