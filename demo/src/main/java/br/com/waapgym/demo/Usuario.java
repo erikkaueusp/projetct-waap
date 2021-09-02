@@ -1,6 +1,7 @@
 package br.com.waapgym.demo;
 
 import javax.persistence.*;
+import java.time.LocalDateTime;
 
 @Entity
 public class Usuario {
@@ -9,10 +10,14 @@ public class Usuario {
 	private Long id;
 	@Lob
 	private byte[] imagem;
+
 	private String nome;
+
 	private String email;
+
 	private String senha;
 
+	private LocalDateTime dataCriacao;
 
 	public byte[] getImagem() {
 		return imagem;
@@ -88,4 +93,11 @@ public class Usuario {
 		this.senha = senha;
 	}
 
+	public LocalDateTime getDataCriacao() {
+		return dataCriacao;
+	}
+
+	public void setDataCriacao(LocalDateTime dataCriacao) {
+		this.dataCriacao = dataCriacao;
+	}
 }

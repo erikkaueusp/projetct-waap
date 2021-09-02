@@ -1,18 +1,18 @@
 package br.com.waapgym.demo.controller;
 
-import br.com.waapgym.demo.Usuario;
-import br.com.waapgym.demo.controller.dto.UsuarioDto;
-import br.com.waapgym.demo.repository.UsuarioRepository;
+
+import br.com.waapgym.demo.model.UsuarioModel;
+
+import br.com.waapgym.demo.service.UsuarioService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
-import org.springframework.web.util.UriComponentsBuilder;
+
 
 import java.io.IOException;
-import java.net.URI;
 import java.util.List;
-import java.util.Optional;
 
 
 @RestController
@@ -20,49 +20,37 @@ import java.util.Optional;
 public class UserController {
 
     @Autowired
-    private UsuarioRepository userRepository;
+    private UsuarioService userService;
+
 
     @GetMapping
-    public List<UsuarioDto> usuarios(String nome) {
-        if (nome == null) {
-            List<Usuario> usuarios = userRepository.findAll();
-            return UsuarioDto.converter(usuarios);
-        }
-        else {
-            List<Usuario> usuarios = userRepository.findBynomeIgnoreCase(nome);
-            return UsuarioDto.converter(usuarios);
-        }
+    public List<UsuarioModel> usuarios(String nome) {
+        List<UsuarioModel> usuarios = userService.listarUsuarios(nome);
+        return usuarios;
     }
 
-    @PostMapping
-    public ResponseEntity<UsuarioDto> cadastrar(@RequestBody UsuarioDto usuarioDto, UriComponentsBuilder uriBuilder) {
-        Usuario usuario = new Usuario(usuarioDto.getNome(), usuarioDto.getEmail());
-        userRepository.save(usuario);
-        URI uri = uriBuilder.path("/users/{id}").buildAndExpand(usuario.getId()).toUri();
-        return ResponseEntity.created(uri).body(new UsuarioDto(usuario));
-    }
+    @PostMapping("/create-user")
+    public ResponseEntity cadastrar(@RequestParam(value = "image",required = false) MultipartFile file,
+                                    @RequestBody UsuarioModel usuarioModel) {
 
-    @PostMapping("/upload")
-    public void uploadImage(@RequestParam("image") MultipartFile file) {
-        Usuario userTest = new Usuario();
-        userTest.setNome("KAKAROTO");
-
-        try {
-            userTest.setImagem(file.getBytes());
-            userRepository.save(userTest);
-        } catch (IOException e) {
-            e.printStackTrace();
+        if (file != null) {
+            try {
+                usuarioModel.setImagem(file.getBytes());
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
-        System.out.println("FOII");
-        System.out.println(userTest.getImagem());
+        this.userService.salvaUsuario(usuarioModel);
+        return new ResponseEntity(HttpStatus.CREATED);
     }
 
-    @GetMapping("/image/{id}")
+
+    @GetMapping("/image/{nome}")
     @ResponseBody
-    public byte[] showImage(@PathVariable("id") Long id){
+    public byte showImage(@PathVariable("nome") String nome){
 
-        Usuario user = userRepository.getOne(id);
-        return user.getImagem();
+        byte imagem = userService.ImageByNome(nome);
+        return imagem;
     }
 
 
