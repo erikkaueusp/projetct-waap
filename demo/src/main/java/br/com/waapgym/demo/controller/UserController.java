@@ -4,14 +4,17 @@ package br.com.waapgym.demo.controller;
 import br.com.waapgym.demo.model.UsuarioModel;
 
 import br.com.waapgym.demo.service.UsuarioService;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.Base64Utils;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 
-import java.io.IOException;
+
 import java.util.List;
 
 
@@ -29,28 +32,31 @@ public class UserController {
         return usuarios;
     }
 
-    @PostMapping("/create-user")
-    public ResponseEntity cadastrar(@RequestParam(value = "image",required = false) MultipartFile file,
-                                    @RequestBody UsuarioModel usuarioModel) {
+    @PostMapping(value="create-user")
+    public ResponseEntity cadastrar(@RequestPart(value = "file",required = false) MultipartFile file,@RequestPart(value = "input", required = false) String jsonText) throws JsonProcessingException {
+
+        UsuarioModel jsonToModel = new ObjectMapper().readValue(jsonText, UsuarioModel.class);
 
         if (file != null) {
             try {
-                usuarioModel.setImagem(file.getBytes());
-            } catch (IOException e) {
+                String fileToString = Base64Utils.encodeToString(file.getBytes());
+                jsonToModel.setFoto(fileToString);
+            } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        this.userService.salvaUsuario(usuarioModel);
+        this.userService.salvaUsuario(jsonToModel);
         return new ResponseEntity(HttpStatus.CREATED);
+
     }
 
 
     @GetMapping("/image/{nome}")
     @ResponseBody
-    public byte showImage(@PathVariable("nome") String nome){
+    public String showImage(@PathVariable("nome") String nome){
 
-        byte imagem = userService.ImageByNome(nome);
-        return imagem;
+        String imagemUrl = userService.ImageByNome(nome);
+        return imagemUrl;
     }
 
 

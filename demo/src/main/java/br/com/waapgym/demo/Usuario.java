@@ -8,8 +8,9 @@ public class Usuario {
 
 	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
+
 	@Lob
-	private byte[] imagem;
+	private String foto;
 
 	private String nome;
 
@@ -17,15 +18,9 @@ public class Usuario {
 
 	private String senha;
 
+
 	private LocalDateTime dataCriacao;
 
-	public byte[] getImagem() {
-		return imagem;
-	}
-
-	public void setImagem(byte[] imagem) {
-		this.imagem = imagem;
-	}
 
 
 	public Usuario() {
@@ -99,5 +94,11 @@ public class Usuario {
 
 	public void setDataCriacao(LocalDateTime dataCriacao) {
 		this.dataCriacao = dataCriacao;
+	}
+	public String getFoto() {
+		return foto;
+	}
+	public void setFoto(String foto) {
+		this.foto = foto;
 	}
 }

@@ -5,9 +5,12 @@ import br.com.waapgym.demo.model.UsuarioModel;
 import br.com.waapgym.demo.repository.UsuarioRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.util.Base64Utils;
 
 import java.beans.Transient;
 import java.time.LocalDateTime;
+import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
 
 @Service
@@ -21,7 +24,8 @@ public class UsuarioService {
     public void salvaUsuario(UsuarioModel usuarioModel) {
         Usuario user = new Usuario();
         user.setNome(usuarioModel.getNome());
-        user.setNome(usuarioModel.getEmail());
+        user.setEmail(usuarioModel.getEmail());
+        user.setFoto(usuarioModel.getFoto());
         user.setDataCriacao(LocalDateTime.now());
         userRepository.save(user);
 
@@ -38,9 +42,9 @@ public class UsuarioService {
         }
     }
 
-    public byte ImageByNome(String nome) {
-        byte imagem = userRepository.findByimagem(nome);
-        return imagem;
+    public String ImageByNome(String nome) {
+        String imagemUrl = userRepository.findByNome(nome).getFoto();
+        return imagemUrl;
     }
 
 

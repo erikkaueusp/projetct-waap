@@ -10,5 +10,5 @@ public interface UsuarioRepository extends JpaRepository<Usuario,Long> {
 
     List<Usuario> findBynomeIgnoreCase(String nome);
 
-    byte findByimagem(String nome);
+    Usuario findByNome(String nome);
 }
